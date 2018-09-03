@@ -8,6 +8,8 @@
 #   https://www.w3schools.com/python/python_classes.asp
 #   https://stackoverflow.com/questions/11264684/flatten-list-of-lists/11264799
 #   https://docs.python.org/3/library/enum.html
+#   https://stackoverflow.com/questions/25902690/typeerror-init-takes-0-positional-arguments-but-1-was-given
+#   https://docs.python.org/3/tutorial/classes.html
 #   
 
 import random
@@ -15,9 +17,8 @@ from enum import Enum
 
 # The loop that is executed durring each turn of the game
 def gameLoop(gameBoard):
-    while gameBoard.isComplete =! false:
+    while gameBoard.isComplete() != True:
         newDirection =  rollDie()
-        print(newDirection)
         gameBoard.moveDirection(newDirection)
     return gameBoard
 
@@ -28,7 +29,7 @@ def rollDie():
 #Enum to represent the direction of movement on our board
 class Direction(Enum):
     UL = 1
-    ER = 2
+    UR = 2
     DL = 3
     DR = 4
 
@@ -44,37 +45,38 @@ class GameBoard:
 
     movesLog = ""
 
-    def __init__:
-        startPosition = getCurrentPositionAsNumber() 
-        logMoveData(f"{startPosition}, ")
+    def __init__(self):
+        startPosition = self.getCurrentPositionAsNumber() 
+        self.logMoveData(f"{startPosition}, ")
 
     # Itterate through all values in boardSpaces and check if they
     #  Have been reached at least once
-    def isComplete():
-        allSpacesVisited = true
-        for subList in flattenedSpaces:
+    def isComplete(self):
+        allSpacesVisited = True
+        for subList in self.boardSpaces:
             for space in subList:
                 if space <= 0:
                     allSpacesVisited = False
                     break
-        lastposition = getCurrentPositionAsNumber()
-        logMoveData(f"{lastposition}.")
+        if allSpacesVisited == True:
+            lastposition = self.getCurrentPositionAsNumber()
+            self.logMoveData(f"{lastposition}.\n")
         return allSpacesVisited
 
     # Gets the average number of dots on the nodes.
-    def getAverageDots():
+    def getAverageDots(self):
         totalDots = 0
         totalSpaces = 0
-        for subList in flattenedSpaces:
+        for subList in self.boardSpaces:
             for space in subList:
                 totalSpaces += 1
                 totalDots += space
         return totalDots/totalSpaces
 
     # Gets the maximum number of dots on any one node.
-    def getMaxDots():
+    def getMaxDots(self):
         maxDots = 0
-        for subList in flattenedSpaces:
+        for subList in self.boardSpaces:
             for space in subList:
                 if space > maxDots:
                     maxDots = space
@@ -82,29 +84,29 @@ class GameBoard:
 
     # Gets the total number of moves performed on the board.
     # This is equal to dots -1 as the board starts with 1 dot.
-    def getTotalMoves():
+    def getTotalMoves(self):
         totalMoves = -1
-        for subList in flattenedSpaces:
+        for subList in self.boardSpaces:
             for space in subList:
                     totalMoves += space
         return maxDots
     
     # Gets the current position as a sigle number instead of a tuple
-    def getCurrentPositionAsNumber():
+    def getCurrentPositionAsNumber(self):
         boardNumbers = [[1],[2,3],[4,5,6],[7,8,9,10],[11,12,13,14,15],[16,17,18,19,20,21]]
-        return boardNumbers[currentRow][currentCollumn]
+        return boardNumbers[self.currentRow][self.currentCollumn]
 
-    def logMoveData(dataToLog):
-        print(dataToLog)
-        movesLog += dataToLog
+    def logMoveData(self, dataToLog):
+        print(dataToLog, end = "")
+        self.movesLog += dataToLog
 
     # Get the value of the next position requested.
     # Check if that value is valid.
     # If not add one to current position and exit.
     # If change current position and add one to new position.
-    def moveDirection(direction):
-        newRow = currentRow
-        newCollumn = currentCollumn
+    def moveDirection(self, direction):
+        newRow = self.currentRow
+        newCollumn = self.currentCollumn
 
         # Find new row
         if direction == Direction.UL or direction == Direction.UR:
@@ -121,22 +123,22 @@ class GameBoard:
         # Check if our location is out of bounds, if so add 1 to 
         #  current space and return.
         if newRow < 0 or newRow > 5:
-            boardSpaces[currentRow][currentCollumn] += 1
-            currentPosition = getCurrentPositionAsNumber()
-            logMoveData(f"{currentPosition}, ")
+            self.boardSpaces[self.currentRow][self.currentCollumn] += 1
+            currentPosition = self.getCurrentPositionAsNumber()
+            self.logMoveData(f"{currentPosition}, ")
             return
         elif newCollumn < 0 or newCollumn > newRow:
-            boardSpaces[currentRow][currentCollumn] += 1
-            currentPosition = getCurrentPositionAsNumber()
-            logMoveData(f"{currentPosition}, ")
+            self.boardSpaces[self.currentRow][self.currentCollumn] += 1
+            currentPosition = self.getCurrentPositionAsNumber()
+            self.logMoveData(f"{currentPosition}, ")
             return
 
         # Set new row and collumn and add to the new position
-        currentRow = newRow
-        currentCollumn = newCollumn
-            boardSpaces[currentRow][currentCollumn] += 1
-            currentPosition = getCurrentPositionAsNumber()
-            logMoveData(f"{currentPosition}, ")
+        self.currentRow = newRow
+        self.currentCollumn = newCollumn
+        self.boardSpaces[self.currentRow][self.currentCollumn] += 1
+        currentPosition = self.getCurrentPositionAsNumber()
+        self.logMoveData(f"{currentPosition}, ")
         return
 
 
