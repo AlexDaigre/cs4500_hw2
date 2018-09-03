@@ -15,12 +15,11 @@ from enum import Enum
 
 # The loop that is executed durring each turn of the game
 def gameLoop(gameBoard):
-    totalMoves = 0
     while gameBoard.isComplete =! false:
         newDirection =  rollDie()
+        print(newDirection)
         gameBoard.moveDirection(newDirection)
-        totalMoves += 1
-    return gameBoard, totalMoves
+    return gameBoard
 
 # Rolls a die and returns UL, ER, DL, or DR
 def rollDie():
@@ -43,6 +42,12 @@ class GameBoard:
     currentRow = 0
     currentCollumn = 0
 
+    movesLog = ""
+
+    def __init__:
+        startPosition = getCurrentPositionAsNumber() 
+        logMoveData(f"{startPosition}, ")
+
     # Itterate through all values in boardSpaces and check if they
     #  Have been reached at least once
     def isComplete():
@@ -52,9 +57,11 @@ class GameBoard:
                 if space <= 0:
                     allSpacesVisited = False
                     break
+        lastposition = getCurrentPositionAsNumber()
+        logMoveData(f"{lastposition}.")
         return allSpacesVisited
 
-    #Gets the average number of dots on the nodes
+    # Gets the average number of dots on the nodes.
     def getAverageDots():
         totalDots = 0
         totalSpaces = 0
@@ -64,7 +71,7 @@ class GameBoard:
                 totalDots += space
         return totalDots/totalSpaces
 
-    #Gets the maximum number of dots on any one node
+    # Gets the maximum number of dots on any one node.
     def getMaxDots():
         maxDots = 0
         for subList in flattenedSpaces:
@@ -72,9 +79,24 @@ class GameBoard:
                 if space > maxDots:
                     maxDots = space
         return maxDots
+
+    # Gets the total number of moves performed on the board.
+    # This is equal to dots -1 as the board starts with 1 dot.
+    def getTotalMoves():
+        totalMoves = -1
+        for subList in flattenedSpaces:
+            for space in subList:
+                    totalMoves += space
+        return maxDots
     
     # Gets the current position as a sigle number instead of a tuple
-    getCurrentPositionAsNumber():
+    def getCurrentPositionAsNumber():
+        boardNumbers = [[1],[2,3],[4,5,6],[7,8,9,10],[11,12,13,14,15],[16,17,18,19,20,21]]
+        return boardNumbers[currentRow][currentCollumn]
+
+    def logMoveData(dataToLog):
+        print(dataToLog)
+        movesLog += dataToLog
 
     # Get the value of the next position requested.
     # Check if that value is valid.
@@ -100,19 +122,25 @@ class GameBoard:
         #  current space and return.
         if newRow < 0 or newRow > 5:
             boardSpaces[currentRow][currentCollumn] += 1
+            currentPosition = getCurrentPositionAsNumber()
+            logMoveData(f"{currentPosition}, ")
             return
         elif newCollumn < 0 or newCollumn > newRow:
             boardSpaces[currentRow][currentCollumn] += 1
+            currentPosition = getCurrentPositionAsNumber()
+            logMoveData(f"{currentPosition}, ")
             return
 
         # Set new row and collumn and add to the new position
         currentRow = newRow
         currentCollumn = newCollumn
             boardSpaces[currentRow][currentCollumn] += 1
+            currentPosition = getCurrentPositionAsNumber()
+            logMoveData(f"{currentPosition}, ")
         return
 
 
 print("a short explanation of the game, and what your simulation is doing \n")
 gameBoard = GameBoard()
 totalMoves = 0
-gameBoard, totalMoves = gameLoop(gameBoard)
+gameBoard = gameLoop(gameBoard)
