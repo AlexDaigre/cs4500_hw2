@@ -11,6 +11,14 @@
 #   current position. When the game completes, the program prints some stats
 #   about the game that just concluded.
 # External Files:
+#   Output File: The game prints the same data printed to the command line. This starts 
+#       with the description of the program, followed by all the spaces the program moved
+#       to, in order. This data ends with, some stats on the game run: total moves,
+#       average number of dots, maximum number of dots.
+#   Standard Librarys:
+#       random: A set of functions that deals with generating random values.
+#           Used to get a value for our move.
+#       enum: Used to create an enum holding the move direction.
 # Sources:
 #   https://www.w3schools.com/python/python_classes.asp
 #   https://stackoverflow.com/questions/11264684/flatten-list-of-lists/11264799
